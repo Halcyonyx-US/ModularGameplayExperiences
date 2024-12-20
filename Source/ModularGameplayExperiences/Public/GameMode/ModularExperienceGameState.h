@@ -4,6 +4,7 @@
 
 #include "ModularGameState.h"
 #include "ActorComponent/ModularExperienceComponent.h"
+#include "ActorComponent/ModularPlayerSpawningComponent.h"
 #include "Messages/ModularVerbMessage.h"
 
 #include "ModularExperienceGameState.generated.h"
