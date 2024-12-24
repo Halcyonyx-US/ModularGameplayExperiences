@@ -31,4 +31,5 @@ public:
 	/**
 	 * @}
 	 */
+	virtual void Shutdown() override;
 };

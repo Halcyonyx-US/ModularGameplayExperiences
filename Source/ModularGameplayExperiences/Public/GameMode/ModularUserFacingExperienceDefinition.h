@@ -9,11 +9,17 @@
 
 /** Description of settings used to display experiences in the UI and start a new session */
 UCLASS(BlueprintType)
-class UModularUserFacingExperienceDefinition : public UPrimaryDataAsset
+class MODULARGAMEPLAYEXPERIENCES_API UModularUserFacingExperienceDefinition : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
 public:
+	/** Auto Set Primary Asset Type/ID **/
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId(TEXT("ModularUserFacingExperienceDefinition"), GetFName());
+	}
+	
 	/** The specific map to load */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Experience, meta=(AllowedTypes="Map"))
 	FPrimaryAssetId MapID;
@@ -64,6 +70,6 @@ public:
 
 public:
 	/** Create a request object that is used to actually start a session with these settings */
-	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	UCommonSession_HostSessionRequest* CreateHostingRequest() const;
+	UFUNCTION(BlueprintCallable, BlueprintPure = false, meta = (WorldContext = "WorldContextObject"))
+	UCommonSession_HostSessionRequest* CreateHostingRequest(const UObject* WorldContextObject) const;
 };

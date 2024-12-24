@@ -1,6 +1,6 @@
 // Copyright Chronicler.
 
-#include "ModularUIManagerSubsystem.h"
+#include "UI/ModularUIManagerSubsystem.h"
 
 #include "CommonLocalPlayer.h"
 #include "Engine/GameInstance.h"

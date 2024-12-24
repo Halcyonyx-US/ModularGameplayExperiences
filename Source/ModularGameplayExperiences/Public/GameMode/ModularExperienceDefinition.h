@@ -17,6 +17,13 @@ class MODULARGAMEPLAYEXPERIENCES_API UModularExperienceDefinition : public UPrim
 
 public:
 	UModularExperienceDefinition();
+
+	/** Auto Set Primary Asset Type/ID **/
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId(TEXT("ModularExperienceDefinition"), GetFName());
+	}
+	
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
 	virtual void UpdateAssetBundleData() override;
 

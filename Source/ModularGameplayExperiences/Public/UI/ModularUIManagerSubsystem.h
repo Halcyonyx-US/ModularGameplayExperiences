@@ -11,7 +11,7 @@ class FSubsystemCollectionBase;
 class UObject;
 
 UCLASS()
-class UModularUIManagerSubsystem : public UGameUIManagerSubsystem
+class MODULARGAMEPLAYEXPERIENCES_API UModularUIManagerSubsystem : public UGameUIManagerSubsystem
 {
 	GENERATED_BODY()
 

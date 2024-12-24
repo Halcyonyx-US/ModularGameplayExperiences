@@ -4,11 +4,12 @@
 
 #include "Components/GameStateComponent.h"
 #include "LoadingProcessInterface.h"
-#include "GameMode/ModularExperienceDefinition.h"
 
 #include "ModularExperienceComponent.generated.h"
 
 namespace UE::GameFeatures { struct FResult; }
+
+class UModularExperienceDefinition;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnModularExperienceLoaded, const UModularExperienceDefinition* /*Experience*/);
 
@@ -29,7 +30,7 @@ enum class EModularExperienceLoadState
  * Intended for GameState actors, but can be used anywhere.
  */
 UCLASS()
-class UModularExperienceComponent final : public UGameStateComponent, public ILoadingProcessInterface
+class MODULARGAMEPLAYEXPERIENCES_API UModularExperienceComponent final : public UGameStateComponent, public ILoadingProcessInterface
 {
 	GENERATED_BODY()
 

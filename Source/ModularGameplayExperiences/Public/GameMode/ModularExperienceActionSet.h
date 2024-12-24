@@ -7,7 +7,7 @@
 #include "ModularExperienceActionSet.generated.h"
 
 UCLASS()
-class UModularExperienceActionSet : public UPrimaryDataAsset
+class MODULARGAMEPLAYEXPERIENCES_API UModularExperienceActionSet : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 

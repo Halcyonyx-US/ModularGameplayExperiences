@@ -11,6 +11,7 @@
 #include "TimerManager.h"
 #include "DataAsset/ModularAssetManager.h"
 #include "GameMode/ModularExperienceManager.h"
+#include "GameMode/ModularExperienceDefinition.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(ModularExperienceComponent)
 

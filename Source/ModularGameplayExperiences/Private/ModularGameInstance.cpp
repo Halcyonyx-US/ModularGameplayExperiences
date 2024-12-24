@@ -35,3 +35,13 @@ void UModularGameInstance::Init()
 		SessionSubsystem->OnPreClientTravelEvent.AddUObject(this, &UModularGameInstance::OnPreClientTravelToSession);
 	}
 }
+
+void UModularGameInstance::Shutdown()
+{
+	if (UCommonSessionSubsystem* SessionSubsystem = GetSubsystem<UCommonSessionSubsystem>())
+	{
+		SessionSubsystem->OnPreClientTravelEvent.RemoveAll(this);
+	}
+
+	Super::Shutdown();
+}

@@ -35,7 +35,7 @@ const UModularPawnData* AModularExperienceGameMode::GetPawnDataForController(con
 		}
 	}
 
-	// If not, fall back to the the default for the current experience
+	// If not, fall back to the default for the current experience
 	check(GameState);
 	const UModularExperienceComponent* ExperienceComponent = GameState->FindComponentByClass<UModularExperienceComponent>();
 	check(ExperienceComponent);
@@ -354,7 +354,7 @@ void AModularExperienceGameMode::HandleMatchAssignmentIfNotExpectingOne()
 		ExperienceIdSource = TEXT("OptionsString");
 	}
 
-	// @todo Add support for developer settings.
+	// @TODO: Add support for developer settings.
 	// if (!ExperienceId.IsValid() && World->IsPlayInEditor())
 	// {
 	// 	ExperienceId = GetDefault<UModularGameplayExperiencesDeveloperSettings>()->ExperienceOverride;
@@ -499,7 +499,7 @@ void AModularExperienceGameMode::HostDedicatedServerMatch(ECommonSessionOnlineMo
 	if (const UGameInstance* GameInstance = GetGameInstance(); ensure(FoundExperience && GameInstance))
 	{
 		// Actually host the game.
-		if (UCommonSession_HostSessionRequest* HostRequest = FoundExperience->CreateHostingRequest(); ensure(HostRequest))
+		if (UCommonSession_HostSessionRequest* HostRequest = FoundExperience->CreateHostingRequest(this); ensure(HostRequest))
 		{
 			HostRequest->OnlineMode = OnlineMode;
 
