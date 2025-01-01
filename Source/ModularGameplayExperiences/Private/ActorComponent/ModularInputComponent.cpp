@@ -1,4 +1,5 @@
-﻿// Copyright Chronicler.
+﻿
+// Copyright Chronicler.
 
 
 #include "ActorComponent/ModularInputComponent.h"

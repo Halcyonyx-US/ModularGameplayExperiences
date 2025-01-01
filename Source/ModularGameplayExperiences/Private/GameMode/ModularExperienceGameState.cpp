@@ -75,6 +75,7 @@ void AModularExperienceGameState::GetLifetimeReplicatedProps(TArray<FLifetimePro
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(ThisClass, ModularPlayerSpawningComponent);
 	DOREPLIFETIME(ThisClass, ServerFPS);
 	DOREPLIFETIME_CONDITION(ThisClass, RecorderPlayerState, COND_ReplayOnly);
 }
