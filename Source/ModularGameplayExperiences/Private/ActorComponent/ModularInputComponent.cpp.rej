@@ -1,0 +1,8 @@
+diff a/Source/ModularGameplayExperiences/Private/ActorComponent/ModularInputComponent.cpp b/Source/ModularGameplayExperiences/Private/ActorComponent/ModularInputComponent.cpp	(rejected hunks)
+@@ -1,4 +0,5 @@
+-﻿// Copyright Chronicler.
++﻿
++// Copyright Chronicler.
+ 
+ 
+ #include "ActorComponent/ModularInputComponent.h"

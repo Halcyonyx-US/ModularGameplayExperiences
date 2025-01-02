@@ -19,7 +19,7 @@ UModularUIManagerSubsystem::UModularUIManagerSubsystem()
 void UModularUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
+	
 	TickHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UModularUIManagerSubsystem::Tick), 0.0f);
 }
 

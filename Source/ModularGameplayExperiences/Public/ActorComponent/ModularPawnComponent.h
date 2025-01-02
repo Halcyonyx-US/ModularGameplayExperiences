@@ -65,6 +65,6 @@ protected:
 	void OnRep_PawnData();
 
 	/** Pawn data used to create the pawn. Specified from a spawn function or on a placed instance. */
-	UPROPERTY(EditInstanceOnly, ReplicatedUsing = OnRep_PawnData, Category = "ModularExperiences|Pawn")
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_PawnData, Category = "ModularExperiences|Pawn")
 	TObjectPtr<const UModularPawnData> PawnData;
 };
