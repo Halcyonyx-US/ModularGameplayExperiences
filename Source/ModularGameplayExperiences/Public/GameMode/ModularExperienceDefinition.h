@@ -5,7 +5,9 @@
 
 #include "ModularExperienceActionSet.h"
 #include "DataAsset/ModularPawnData.h"
+#include "Misc/DataValidation.h"
 #include "ModularExperienceDefinition.generated.h"
+
 
 /**
  * @todo Ensure a B_ModularDefaultExperience asset exists in the project.
