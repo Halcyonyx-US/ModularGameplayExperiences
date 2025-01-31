@@ -7,6 +7,7 @@
 #include "ModularGameplayExperiencesLogs.h"
 #include "ActorComponent/ModularExperienceComponent.h"
 #include "ActorComponent/ModularPawnComponent.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
 #include "GameMode/ModularExperienceGameMode.h"
 #include "Net/UnrealNetwork.h"
 #include "Net/Core/PushModel/PushModel.h"
@@ -15,7 +16,7 @@
 
 AModularExperiencePlayerState::AModularExperiencePlayerState(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-	, MyPlayerConnectionType(EModularPlayerConnectionType::Player)
+	  , MyPlayerConnectionType(EModularPlayerConnectionType::Player), ReplicatedViewRotation()
 {
 }
 
@@ -116,6 +117,46 @@ void AModularExperiencePlayerState::ClientInitialize(AController* Controller)
 	}
 }
 
+void AModularExperiencePlayerState::CopyProperties(APlayerState* PlayerState)
+{
+	Super::CopyProperties(PlayerState);
+
+	//@TODO: Copy stats
+}
+
+
+void AModularExperiencePlayerState::OnDeactivated()
+{
+	bool bDestroyDeactivatedPlayerState;
+	switch (GetPlayerConnectionType())
+	{
+	case EModularPlayerConnectionType::Player:
+	case EModularPlayerConnectionType::InactivePlayer:
+		//@TODO: Ask the experience if we should destroy disconnecting players immediately or leave them around
+		// (e.g., for long running servers where they might build up if lots of players cycle through)
+		bDestroyDeactivatedPlayerState = true;
+		break;
+	default:
+		bDestroyDeactivatedPlayerState = true;
+		break;
+	}
+
+	SetPlayerConnectionType(EModularPlayerConnectionType::InactivePlayer);
+
+	if (bDestroyDeactivatedPlayerState)
+	{
+		Destroy();
+	}
+}
+
+void AModularExperiencePlayerState::OnReactivated()
+{
+	if (GetPlayerConnectionType() == EModularPlayerConnectionType::InactivePlayer)
+	{
+		SetPlayerConnectionType(EModularPlayerConnectionType::Player);
+	}
+}
+
 void AModularExperiencePlayerState::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
@@ -134,3 +175,58 @@ void AModularExperiencePlayerState::PostInitializeComponents()
 		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnModularExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
 	}
 }
+
+void AModularExperiencePlayerState::AddStatTagStack(FGameplayTag Tag, int32 StackCount)
+{
+	StatTags.AddStack(Tag, StackCount);
+}
+
+void AModularExperiencePlayerState::RemoveStatTagStack(FGameplayTag Tag, int32 StackCount)
+{
+	StatTags.RemoveStack(Tag, StackCount);
+}
+
+int32 AModularExperiencePlayerState::GetStatTagStackCount(FGameplayTag Tag) const
+{
+	return StatTags.GetStackCount(Tag);
+}
+
+bool AModularExperiencePlayerState::HasStatTag(FGameplayTag Tag) const
+{
+	return StatTags.ContainsTag(Tag);
+}
+
+void AModularExperiencePlayerState::SetPlayerConnectionType(EModularPlayerConnectionType NewType)
+{
+	MyPlayerConnectionType = NewType;
+}
+
+void AModularExperiencePlayerState::ClientBroadcastMessage_Implementation(const FModularVerbMessage Message)
+{
+	// This check is needed to prevent running the action when in standalone mode
+	if (GetNetMode() == NM_Client)
+	{
+		UGameplayMessageSubsystem::Get(this).BroadcastMessage(Message.Verb, Message);
+	}
+}
+
+/** @Game-Change start delay OnExperienceLoaded to wait until the pawn is set, and so is their pawn data in their Pawn Extension Component
+** for pawns that don't want to use the Pawn Data from the experience component. **/
+void AModularExperiencePlayerState::RegisterToExperienceLoadedToSetPawnData()
+{
+	if (bRegisteredToExperienceLoaded) return;
+	
+	const UWorld* World = GetWorld();
+	if (World && World->IsGameWorld() && World->GetNetMode() != NM_Client)
+	{
+		const AGameStateBase* GameState = GetWorld()->GetGameState();
+		check(GameState);
+
+		UModularExperienceComponent* ExperienceComponent = GameState->FindComponentByClass<UModularExperienceComponent>();
+		check(ExperienceComponent);
+		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnModularExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
+	}
+
+	bRegisteredToExperienceLoaded = true; // only set this once. In the player's case the PlayerState is persistant while it gets destroyed with the AIs that don't have a player 
+}
+/** @Game-Change end **/

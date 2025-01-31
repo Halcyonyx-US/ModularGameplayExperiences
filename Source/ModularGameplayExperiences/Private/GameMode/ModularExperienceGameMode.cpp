@@ -23,6 +23,16 @@ AModularExperienceGameMode::AModularExperienceGameMode(const FObjectInitializer&
 
 const UModularPawnData* AModularExperienceGameMode::GetPawnDataForController(const AController* InController) const
 {
+	/** @Game-Change start use the pawn data info if that's been setup. Useful for not using the experience default pawn data and/or when there's no playerState **/
+	if (const UModularPawnComponent* PawnExtComp = UModularPawnComponent::FindModularPawnComponent(InController->GetPawn()))
+	{
+		if (const UModularPawnData* PawnData = PawnExtComp->GetPawnData<UModularPawnData>())
+		{
+			return PawnData;
+		}
+	}
+	/** @Game-Change end **/
+	
 	// See if pawn data is already set on the player state.
 	if (InController != nullptr)
 	{
